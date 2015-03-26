@@ -1,6 +1,6 @@
 module Hangman
   class Game
-    attr_accessor :letter, :cipher, :step, :word
+    attr_accessor :letter, :cipher, :steps, :word
 
     def initialize(word = Word.new)
       @instance = word
@@ -31,44 +31,43 @@ module Hangman
     end
 
     def save
-      savefile = File.open('../save/save.yaml', 'w') { |f| f.write(YAML::dump(self)) }
+      savefile = File.open('save/save.yaml', 'w') { |f| f.write(YAML::dump(self)) }
+      puts "Game saved!"
     end
 
     def load
       yaml = nil
-      savefile = File.open('../save/save.yaml', 'r') { |f| yaml = f.read}
+      savefile = File.open('save/save.yaml', 'r') { |f| yaml = f.read}
       load = YAML::load(yaml)
       @word = load.word
       @cipher = load.cipher
-      @step = load.step
+      @steps = load.steps
+      puts "\n\nGame loaded!"
     end
 
     def play
       puts "Guess the word."
-      # puts "Type 'load' to load a saved game"
-      (cipher.length + 2).downto(1) do |step|
-        @step = step
-        puts "You have #{@step} tries. Type 'save' to save the game.\n\n#{@cipher}"
+      puts "Type 'load' to load a saved game"
+      (@steps).downto(1) do |step|
+        @steps = step
+        puts "You have #{@steps} tries. Type 'save' to save the game.\n\n#{@cipher}"
         puts get_letter
         if @letter == 'save'
           self.save
-          puts "Game saved!"
           puts get_letter
-        # elsif @letter == 'load'
-          # self.load
-          # puts "Game loaded!"
-
-          # puts "You have #{@step} tries. Type 'save' to save the game.\n\n#{@cipher}"
-          # puts get_letter
+        elsif @letter == 'load'
+          self.load
+          self.play
+          break
         end
-        # retry if @letter == 'load'
         check_for_match(@letter)
         if !@cipher.include?('_')
           puts "You won! The word was '#{@cipher}'."
           break
+        elsif @cipher.include?('_') && @steps == 0
+          puts "The word was '#{@word}'."
         end
       end
-      puts "The word was '#{@word}'."
     end
   end
 end

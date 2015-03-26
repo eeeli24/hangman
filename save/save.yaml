@@ -1,8 +1,4 @@
 --- !ruby/object:Hangman::Game
-word: manicheism
-letter: save
-cipher: _a_i__ei__
-step: 9
 instance: !ruby/object:Hangman::Word
   dictionary:
   - aachen
@@ -52458,5 +52454,8 @@ instance: !ruby/object:Hangman::Word
   - zygote
   - zygotic
   - zymurgy
-  word: manicheism
+  word: progression
+word: progression
+cipher: ______ss___
+letter: save
 steps: 12
