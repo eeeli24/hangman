@@ -3,9 +3,8 @@ module Hangman
     attr_accessor :letter, :cipher, :steps, :word
 
     def initialize(word = Word.new)
-      @instance = word
-      @word = @instance.word
-      @cipher = @instance.hidden
+      @word = word.word
+      @cipher = word.hidden
       @letter = ''
       @steps = cipher.length + 2
     end
